@@ -1,18 +1,21 @@
 {
   "name": "API-Sendmail",
   "version": "1.0.0",
-  "scripts": {
-    "start": "node dist/app.js",
-    "build": "tsc"
-  },
+  "builds": [
+    {
+      "src": "src/app.ts",
+      "use": "@vercel/node",
+      "config": { "includeFiles": ["dist/**"] }
+    }
+  ],
   "routes": [
     {
-      "src": "/send-email",
-      "dest": "src/routes/email.js"
+      "src": "dust/send-email.js",
+      "dest": "dist/routes/email.js"
     },
     {
       "src": "/(.*)",
-      "dest": "src/app.js"
+      "dest": "dist/app.js"
     }
   ],
   "dependencies": {
