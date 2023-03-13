@@ -10,7 +10,7 @@
   ],
   "routes": [
     {
-      "src": "dust/send-email.js",
+      "src": "dist/send-email.js",
       "dest": "dist/routes/email.js"
     },
     {
