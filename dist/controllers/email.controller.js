@@ -14,18 +14,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = void 0;
 const mail_1 = __importDefault(require("@sendgrid/mail"));
-const { Email } = require("../models/email.model");
 require("dotenv").config();
 const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { to, subject, text } = req.body;
+        console.log("req.body : ", req.body);
+        const { name, email, message } = req.body;
+        console.log("Checking environment variables:", process.env.MAILER);
         const msg = {
-            to,
-            from: process.env.mailer,
-            subject,
-            text,
+            to: "contact@kbezzouh.com",
+            from: process.env.MAILER,
+            subject: `New email from ${name} `,
+            text: `${email} sent you an email : \n\n${message}`,
         };
-        yield mail_1.default.send(msg);
+        console.log("Checking msg object:", msg);
+        yield mail_1.default
+            .send(msg)
+            .then((response) => {
+            console.log("It works ! Status code : ", response[0].statusCode);
+            console.log("Headers : ", response[0].headers);
+        })
+            .catch((error) => {
+            console.error("Error : ", error);
+        });
         res.status(200).json({ message: "Email sent successfully." });
     }
     catch (err) {

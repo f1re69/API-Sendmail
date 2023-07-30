@@ -1,10 +1,18 @@
 import express from "express";
+import cors from "cors";
 import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 import emailRoutes from "./routes/email"; // Import using ES6 syntax
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Replace with your frontend URL
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 dotenv.config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY!);

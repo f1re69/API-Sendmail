@@ -1,6 +1,5 @@
-interface Email {
-  to: string;
-  from: string;
-  subject: string;
-  text: string;
+export interface Email {
+  name: string;
+  email: string;
+  message: string;
 }
