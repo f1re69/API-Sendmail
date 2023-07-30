@@ -19,14 +19,12 @@ const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("req.body : ", req.body);
         const { name, email, message } = req.body;
-        console.log("Checking environment variables:", process.env.MAILER);
         const msg = {
             to: "contact@kbezzouh.com",
             from: process.env.MAILER,
             subject: `New email from ${name} `,
             text: `${email} sent you an email : \n\n${message}`,
         };
-        console.log("Checking msg object:", msg);
         yield mail_1.default
             .send(msg)
             .then((response) => {
