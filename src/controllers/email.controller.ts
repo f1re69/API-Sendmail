@@ -1,12 +1,26 @@
 import { Request, Response } from "express";
 import sgMail from "@sendgrid/mail";
+import axios from "axios";
 import { Email } from "../models/email.model";
 require("dotenv").config();
 
 export const sendEmail = async (req: Request, res: Response): Promise<void> => {
+  console.log(req.body);
   try {
-    console.log("req.body : ", req.body);
-    const { name, email, message } = req.body as Email;
+    const { name, email, message, recaptchaResponse } = req.body as Email & {
+      recaptchaResponse: string;
+    };
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaResponse}`;
+
+    const verification = await axios.post(verifyURL);
+    const { success } = verification.data;
+
+    if (!success) {
+      res.status(400).json({ message: "reCAPTCHA validation failed" });
+      return;
+    }
+
     const msg = {
       to: "contact@kbezzouh.com",
       from: process.env.MAILER,

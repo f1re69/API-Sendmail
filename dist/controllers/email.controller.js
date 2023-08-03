@@ -14,11 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = void 0;
 const mail_1 = __importDefault(require("@sendgrid/mail"));
+const axios_1 = __importDefault(require("axios"));
 require("dotenv").config();
 const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     try {
-        console.log("req.body : ", req.body);
-        const { name, email, message } = req.body;
+        const { name, email, message, recaptchaResponse } = req.body;
+        const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+        const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaResponse}`;
+        const verification = yield axios_1.default.post(verifyURL);
+        const { success } = verification.data;
+        if (!success) {
+            res.status(400).json({ message: "reCAPTCHA validation failed" });
+            return;
+        }
         const msg = {
             to: "contact@kbezzouh.com",
             from: process.env.MAILER,
