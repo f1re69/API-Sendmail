@@ -35,9 +35,16 @@ export const sendEmail = async (req: Request, res: Response): Promise<void> => {
         console.log("Headers : ", response[0].headers);
         res.status(200).json({ message: "Email sent successfully." });
       })
-      .catch((err) => {
-        console.error("Error : ", err);
-        res.status(500).json({ message: "Error sending emai : " + err });
+      .catch((error) => {
+        console.error("Error : ", error);
+        if (
+          error.response &&
+          error.response.body &&
+          error.response.body.errors
+        ) {
+          console.error("SendGrid Errors: ", error.response.body.errors);
+        }
+        res.status(500).json({ message: "Error sending email via SendGrid." });
       });
   } catch (err) {
     console.error(err);
