@@ -23,9 +23,9 @@ export const sendEmail = async (req: Request, res: Response): Promise<void> => {
 
     const msg = {
       to: "contact@kbezzouh.com",
-      from: process.env.MAILER,
+      from: { email: process.env.MAILER, name: name },
       subject: `New email from ${name} `,
-      text: `${email} sent you an email : \n\n${message}`,
+      text: `${email} (${name}) sent you an email : \n\n${message}`,
     };
 
     await sgMail

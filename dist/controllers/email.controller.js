@@ -30,9 +30,9 @@ const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const msg = {
             to: "contact@kbezzouh.com",
-            from: process.env.MAILER,
+            from: { email: process.env.MAILER, name: name },
             subject: `New email from ${name} `,
-            text: `${email} sent you an email : \n\n${message}`,
+            text: `${email} (${name}) sent you an email : \n\n${message}`,
         };
         yield mail_1.default
             .send(msg)
