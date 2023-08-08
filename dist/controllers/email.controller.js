@@ -39,11 +39,12 @@ const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .then((response) => {
             console.log("It works ! Status code : ", response[0].statusCode);
             console.log("Headers : ", response[0].headers);
+            res.status(200).json({ message: "Email sent successfully." });
         })
-            .catch((error) => {
-            console.error("Error : ", error);
+            .catch((err) => {
+            console.error("Error : ", err);
+            res.status(500).json({ message: "Error sending emai : " + err });
         });
-        res.status(200).json({ message: "Email sent successfully." });
     }
     catch (err) {
         console.error(err);
