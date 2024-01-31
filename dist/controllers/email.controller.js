@@ -57,18 +57,3 @@ const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.sendEmail = sendEmail;
-// export const getWeatherData = async (
-//   req: Request,
-//   res: Response
-// ): Promise<void> => {
-//   try {
-//     const { lat, lon } = req.query;
-//     const apiKey = process.env.OPENWEATHERMAP_API_KEY;
-//     const weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-//     const weatherData = await axios.get(weatherURL);
-//     res.status(200).json(weatherData.data);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: "Error fetching weather data: " + err });
-//   }
-// };
