@@ -5,19 +5,17 @@ import dotenv from "dotenv";
 import emailRoutes from "./routes/email"; // Import using ES6 syntax
 
 const app = express();
+const corsOptions = {
+  // origin: process.env.CORS_ORIGIN,
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
 
 dotenv.config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
-app.use("/send-email", emailRoutes);
+app.use("/send-email", cors(corsOptions), emailRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

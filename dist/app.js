@@ -9,15 +9,15 @@ const mail_1 = __importDefault(require("@sendgrid/mail"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const email_1 = __importDefault(require("./routes/email")); // Import using ES6 syntax
 const app = (0, express_1.default)();
-app.use(express_1.default.json());
-app.use((0, cors_1.default)({
-    origin: process.env.CORS_ORIGIN,
+const corsOptions = {
+    // origin: process.env.CORS_ORIGIN,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
-}));
+};
+app.use(express_1.default.json());
 dotenv_1.default.config();
 mail_1.default.setApiKey(process.env.SENDGRID_API_KEY);
-app.use("/send-email", email_1.default);
+app.use("/send-email", (0, cors_1.default)(corsOptions), email_1.default);
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: "Internal Server Error" });
